@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package controladores;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author estudiante.2016
  */
-@WebServlet(urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "UsuariosServlet", urlPatterns = {"/UsuariosServlet"})
+public class UsuariosServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,27 +31,19 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String usuario = request.getParameter("usuario");
-            String password = request.getParameter("password");
-            
-            response.setContentType("aplication/json");
-            
-            
-            Gson gson = new Gson();
-            JsonObject object = new JsonObject();
-            
-            if( usuario.equals("admin") && password.equals("1234") ){
-                object.addProperty("error",Boolean.FALSE);
-                object.addProperty("url","home.jsp");
-            }
-            else {
-                object.addProperty("error",Boolean.TRUE);
-                object.addProperty("errormsg","Usuario o contraseña incorrecta");                
-            }
-            
-            PrintWriter out = response.getWriter();
-            out.print(gson.toJson(object));
-            out.flush();
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet UsuariosServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet UsuariosServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -64,8 +55,6 @@ public class LoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

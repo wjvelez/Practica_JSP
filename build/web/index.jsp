@@ -43,23 +43,29 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="javascripts/script.js"></script>
-    <script>
-        $( document ).ready(function(){
-            $("#loginForm").submit(function(e){
-                e.preventDefault();
-                
-                var url = "LoginServlet";
-                
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: $("#loginForm").serialize(),
-                    success: function(data){
-                        console.log(data);
-                    }
-                });
-            });
-        })
+    <script> 
+        $(document).ready(function(){
+           $("#loginForm").submit(function(e){
+               e.preventDefault();
+               
+               var url ="LoginServlet";
+               
+               $.ajax({
+                  type: "POST",
+                  url: url,
+                  data: $("#loginForm").serialize(),
+                  success: function(data){
+                      //console.log(data);
+                      if(data.eroor){
+                          $("#errorLogin").show();
+                          $("#errorLogin").text(data.errormsg);
+                      }else{
+                          window.location = data.url;
+                      }
+                  }
+               });
+           }) ;
+        });
     </script>
   </body>
 </html>
