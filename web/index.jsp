@@ -56,7 +56,7 @@
                   data: $("#loginForm").serialize(),
                   success: function(data){
                       //console.log(data);
-                      if(data.eroor){
+                      if(data.error){
                           $("#errorLogin").show();
                           $("#errorLogin").text(data.errormsg);
                       }else{
