@@ -7,23 +7,21 @@ package controladores;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
-
-import java.io.IOException;
 
 /**
  *
- * @author estudiante.2016
+ * @author J
  */
-@WebServlet(name = "UsuariosServlet", urlPatterns = {"/UsuariosServlet"})
-public class UsuariosServlet extends HttpServlet {
-    
+@WebServlet(name = "CargarServlet", urlPatterns = {"/CargarServlet"})
+public class CargarServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,27 +33,26 @@ public class UsuariosServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String req_nombre = request.getParameter("inputNombre");
-        String req_email = request.getParameter("inputEmail");
-        String req_rol = request.getParameter("selectRol");
+        String usuario = request.getParameter("usuario");
+        String password = request.getParameter("password");
         
         response.setContentType("application/json");
         
         Gson gson = new Gson();
         JsonObject object = new JsonObject();
         
-        if ( req_nombre.equals("") || req_email.equals("") || req_rol.equals("") ){
-            object.addProperty("error", Boolean.TRUE);
-            object.addProperty("errormsg", "Algun campo vacio");
-        }else {
+        
+        if (true){
             object.addProperty("error", Boolean.FALSE);
             object.addProperty("url", "direct.jsp");
+        }else {
+            object.addProperty("error", Boolean.TRUE);
+            object.addProperty("errormsg", "Json Failed");
         }
         
         PrintWriter out = response.getWriter();
         out.print(gson.toJson(object));
         out.flush();
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -67,7 +64,6 @@ public class UsuariosServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

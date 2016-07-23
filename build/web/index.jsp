@@ -59,7 +59,8 @@
                       if(data.error){
                           $("#errorLogin").show();
                           $("#errorLogin").text(data.errormsg);
-                      }else{
+                      }
+                      else{
                           window.location = data.url;
                       }
                   }

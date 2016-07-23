@@ -1,4 +1,14 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<%@page import="java.util.LinkedList"%>
+<%@page import="controladores.Usuario"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" 
+    import = 'java.sql.*' 
+%>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -40,7 +50,7 @@
     </nav>
     <div class="container usuarios">
       <h2>Registro de Usuarios</h2>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUsuarios">Agregar Usuario</button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUsuarios">Agregar Usuario</button>     
       <table id="tablaUsuarios" class="table table-bordered table-striped">
         <thead>
           <tr>
@@ -52,31 +62,41 @@
             <th>Eliminar</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Juan Perez</td>
-            <td>jperez@example.com</td>
-            <td>Desarrollador</td>
-            <td><a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-            <td><a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Rodrigo Castro</td>
-            <td>rcastro@example.com</td>
-            <td>Diseñador</td>
-            <td><a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-            <td><a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Jose Sanchez</td>
-            <td>jsanchez@example.com</td>
-            <td>Administrador</td>
-            <td><a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-            <td><a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
-          </tr>
+        <tbody>          
+        <% 
+            Connection conex = null;
+            Statement sql = null;
+            String db_name = "prueba";
+            String db_usuario = "root";
+            String db_pass = "julian";
+
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+                conex = (Connection)DriverManager.getConnection("jdbc:mysql://127.0.0.1/" + db_name , db_usuario , db_pass );
+                sql=conex.createStatement();
+                ResultSet rs = sql.executeQuery("select * from usuarios" );
+                String cad = "";
+                while ( rs.next() )
+                 {
+                            cad = cad + "<tr><th scope='row'>" + rs.getInt("id") + "</th>" 
+                            + "<td>" + rs.getString("nombre") + "</td>" 
+                            + "<td>" + rs.getString("email") + "</td>" 
+                            + "<td>" + rs.getString("rol") + "</td>"
+                            + "<td><a href='#'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a></td>" 
+                            + "<td><a href='#'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a></td>"
+                            + "</tr>";
+                 }
+                 rs.close();
+                 sql.close();
+                 
+                 out.print(cad);
+                 
+            }
+            catch(Exception e){
+                out.print("ERROR EN LA CONEXION");
+            };
+        %>
+        
         </tbody>
       </table>
     </div>
@@ -85,7 +105,10 @@
     <div class="modal fade" id="modalUsuarios" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <form>
+            
+            <!-- action="direct.jsp" method="post" -->
+            <form id="addForm" >
+                
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title">Ingresar Usuario</h4>
@@ -107,7 +130,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Ingresar</button>
+              <button type="submit" class="btn btn-primary" id="btn-ingresar">Ingresar</button>
             </div>
           </form>
         </div>
@@ -127,8 +150,38 @@
                     { 'bSortable': false, 'aTargets': [ 4, 5 ] }
                  ]
             });
-            
         });
+    </script>
+    <script>
+    
+        $("#addForm").submit(function(e){
+            e.preventDefault();
+            
+            var url = "UsuariosServlet";
+            
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: $("#addForm").serialize(),
+                success: function(data){
+                    if(data.error){
+                        console.log(data.errormsg);
+                    }
+                    else{
+                        window.location = data.url;
+                    }
+                }
+            });
+        });
+        function Ingresar(){
+            //$("#users").change(function(){
+                var value = $(this).val();
+                $.get("direct.jsp",{q:value},function(data){
+                    $("#tablaUsuarios").html(data);
+                });
+            //});
+        };
+        
     </script>
   </body>
 </html>
