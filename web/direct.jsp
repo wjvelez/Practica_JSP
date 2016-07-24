@@ -3,19 +3,20 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" 
     import = 'java.sql.*' 
 %>
-
+    
 <% 
     Connection conex = null;
     Statement sql = null;
     String db_name = "prueba";
     String db_usuario = "root";
     String db_pass = "julian";
+    String db_tablename = "usuarios";
     
     try{
         Class.forName("com.mysql.jdbc.Driver");
         conex = (Connection)DriverManager.getConnection("jdbc:mysql://127.0.0.1/" + db_name , db_usuario , db_pass );
         sql=conex.createStatement();
-        ResultSet rs = sql.executeQuery("select * from usuarios" );
+        ResultSet rs = sql.executeQuery("select * from usuarios");
         LinkedList<Usuario> listaUsuarios = new LinkedList<Usuario>();
         while ( rs.next() )
          {

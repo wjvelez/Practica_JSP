@@ -4,9 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/J/Documents/NetBeansProjects/AdmProyectos/src/java/controladores/UsuariosServlet.java</file>
+            <file>file:/C:/Users/J/Documents/NetBeansProjects/AdmProyectos/web/data.jsp</file>
             <file>file:/C:/Users/J/Documents/NetBeansProjects/AdmProyectos/src/java/controladores/LoginServlet.java</file>
-            <file>file:/C:/Users/J/Documents/NetBeansProjects/AdmProyectos/src/java/com/julian/dao/Usuariodao.java</file>
-            <file>file:/C:/Users/J/Documents/NetBeansProjects/AdmProyectos/web/direct.jsp</file>
+            <file>file:/C:/Users/J/Documents/NetBeansProjects/AdmProyectos/src/java/controladores/Usuario.java</file>
             <file>file:/C:/Users/J/Documents/NetBeansProjects/AdmProyectos/web/index.jsp</file>
             <file>file:/C:/Users/J/Documents/NetBeansProjects/AdmProyectos/web/home.jsp</file>
         </group>

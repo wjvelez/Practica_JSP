@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
-
 import java.io.IOException;
+
 
 /**
  *
@@ -49,8 +49,9 @@ public class UsuariosServlet extends HttpServlet {
             object.addProperty("errormsg", "Algun campo vacio");
         }else {
             object.addProperty("error", Boolean.FALSE);
-            object.addProperty("url", "direct.jsp");
+            object.addProperty("url", "home.jsp");
         }
+        
         
         PrintWriter out = response.getWriter();
         out.print(gson.toJson(object));

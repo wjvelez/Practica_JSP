@@ -7,8 +7,6 @@
     import = 'java.sql.*' 
 %>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -62,34 +60,36 @@
             <th>Eliminar</th>
           </tr>
         </thead>
-        <tbody>          
+        <tbody>
+            
         <% 
             Connection conex = null;
             Statement sql = null;
             String db_name = "prueba";
             String db_usuario = "root";
             String db_pass = "julian";
-
+            
             try{
                 Class.forName("com.mysql.jdbc.Driver");
                 conex = (Connection)DriverManager.getConnection("jdbc:mysql://127.0.0.1/" + db_name , db_usuario , db_pass );
-                sql=conex.createStatement();
+                sql = conex.createStatement();
                 ResultSet rs = sql.executeQuery("select * from usuarios" );
                 String cad = "";
-                while ( rs.next() )
-                 {
-                            cad = cad + "<tr><th scope='row'>" + rs.getInt("id") + "</th>" 
-                            + "<td>" + rs.getString("nombre") + "</td>" 
-                            + "<td>" + rs.getString("email") + "</td>" 
-                            + "<td>" + rs.getString("rol") + "</td>"
-                            + "<td><a href='#'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a></td>" 
-                            + "<td><a href='#'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a></td>"
-                            + "</tr>";
-                 }
-                 rs.close();
-                 sql.close();
+                
+                while ( rs.next() ) {    
+                    cad = cad + "<tr><th scope='row'>" + rs.getInt("id") + "</th>" 
+                    + "<td>" + rs.getString("nombre") + "</td>" 
+                    + "<td>" + rs.getString("email") + "</td>" 
+                    + "<td>" + rs.getString("rol") + "</td>"
+                    + "<td><a href='#'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a></td>" 
+                    + "<td><a href='#'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a></td>"
+                    + "</tr>";
+                }
+                
+                rs.close();
+                sql.close();
                  
-                 out.print(cad);
+                out.print(cad);
                  
             }
             catch(Exception e){
@@ -107,7 +107,7 @@
         <div class="modal-content">
             
             <!-- action="direct.jsp" method="post" -->
-            <form id="addForm" >
+            <form id="addForm">
                 
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -118,7 +118,7 @@
                   <input type="text" class="form-control" id="inputNombre" name="inputNombre" placeholder="Nombre">
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control" id="inputApellido" name="inputEmail" placeholder="Email">
+                  <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Email">
                 </div>
                 <div class="form-group">
                   <select class="form-control" id="selectRol" name="selectRol">
@@ -131,6 +131,7 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
               <button type="submit" class="btn btn-primary" id="btn-ingresar">Ingresar</button>
+              
             </div>
           </form>
         </div>
@@ -150,15 +151,16 @@
                     { 'bSortable': false, 'aTargets': [ 4, 5 ] }
                  ]
             });
+            
+            $("#btn-ingresar").keyup(function(){
+                window.location.reload();
+            });
         });
     </script>
     <script>
-    
         $("#addForm").submit(function(e){
             e.preventDefault();
-            
             var url = "UsuariosServlet";
-            
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -168,20 +170,45 @@
                         console.log(data.errormsg);
                     }
                     else{
-                        window.location = data.url;
+                        AnadirUser();
+                        //window.location = data.url;
+                        window.location.reload();
                     }
                 }
             });
         });
-        function Ingresar(){
-            //$("#users").change(function(){
-                var value = $(this).val();
-                $.get("direct.jsp",{q:value},function(data){
-                    $("#tablaUsuarios").html(data);
-                });
-            //});
+/* ========================================================================== */
+        function AnadirUser(){
+            var value = $("#selectRol").val();
+            var name = $("#inputNombre").val();
+            var email = $("#inputEmail").val();
+            
+            var role = "";
+            if( value === '1' ){
+                role="Desarrollador";
+            }
+            else if( value === '2' ){
+                role="Dise&ntilde;ador";
+            }
+            else{
+                role="Administrador";
+            }
+            
+            $.get("data.jsp",{
+                q:role,
+                n:name,
+                e:email
+            },function(data){
+                // some code...
+            });
+            
+            window.location.reload();
+            
         };
+/* ========================================================================== */
+    /*$("#tablaUsuarios tbody .glyphicon-edit"){
         
+    }*/
     </script>
   </body>
 </html>
